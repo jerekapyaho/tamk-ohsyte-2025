@@ -9,6 +9,33 @@ TAMK / Tietotekniikka / Ohjelmoinnin syventävät tekniikat, kevät 2025
 
 * [Generating Random Numbers Between 1 and 100 in Java](https://dev.to/meenakshi052003/generating-random-numbers-between-1-and-100-in-java-i3b)
 
+## Time and date handling
+
+Use the `java.time` package and its subpackages.
+
+## Setting an environment variable
+
+In Unix / Linux, set the value in your shell's configuration file.
+Add the line
+
+    export BIRTHDATE=1989-11-06
+
+to your `.bashrc` or equivalent, and then source it:
+
+    source .bashrc
+    
+Or, set it just for the next run:
+
+    BIRTHDATE=1989-11-06 java EnvTest.java BIRTHDATE
+
+In Windows, use the `setx` command from Command Prompt:
+
+    setx BIRTHDATE 1989-11-06
+
+Check the setting with the `echo` command:
+
+    echo %BIRTHDATE%
+
 ## JShell
 
 * [JShell Tutorial](https://cr.openjdk.org/~rfield/tutorial/JShellTutorial.html)
