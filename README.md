@@ -1,6 +1,17 @@
 # tamk-ohsyte-2025
 TAMK / Tietotekniikka / Ohjelmoinnin syventävät tekniikat, kevät 2025
 
+## Java versions
+
+* Marco Behler, [Java Versions and Features](https://www.marcobehler.com/guides/a-guide-to-java-versions-and-features)
+
+## Random number generation
+
+* [Generating Random Numbers Between 1 and 100 in Java](https://dev.to/meenakshi052003/generating-random-numbers-between-1-and-100-in-java-i3b)
+
+## JShell
+
+* [JShell Tutorial](https://cr.openjdk.org/~rfield/tutorial/JShellTutorial.html)
 
 ## Visual Studio Code
 
