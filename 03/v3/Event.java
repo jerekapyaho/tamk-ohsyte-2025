@@ -5,32 +5,23 @@ import java.util.Objects;
  * Represents an event in history.
  */
 public class Event {
-    private String description;
     private LocalDate date;
+    private String description;
     private Category category;
 
     /**
      * Constructs a new event.
      * 
-     * @param description the description of the event
      * @param date the date of the event
+     * @param description the description of the event
      * @param category the category of the event
      * 
      * @see Category
      */
-    public Event(String description, LocalDate date, Category category) {
-        this.description = description;
+    public Event(LocalDate date, String description, Category category) {
         this.date = date;
+        this.description = description;
         this.category = category;
-    }
-
-    /**
-     * Gets the event description.
-     * 
-     * @return the description
-     */
-    public String getDescription() {
-        return this.description;
     }
 
     /**
@@ -40,6 +31,15 @@ public class Event {
      */
     public LocalDate getDate() {
         return this.date;
+    }
+
+    /**
+     * Gets the event description.
+     * 
+     * @return the description
+     */
+    public String getDescription() {
+        return this.description;
     }
 
     /**
@@ -80,8 +80,8 @@ public class Event {
         // Cast to our type:
         Event that = (Event) o;
 
-        if (Objects.equals(this.description, that.description) && 
-            Objects.equals(this.date, that.date) && 
+        if (Objects.equals(this.date, that.date) &&
+            Objects.equals(this.description, that.description) && 
             Objects.equals(this.category, that.category)) {
             return true;
         }
@@ -96,6 +96,6 @@ public class Event {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(this.description, this.date, this.category);
+        return Objects.hash(this.date, this.description, this.category);
     }
 }

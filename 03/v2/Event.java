@@ -1,22 +1,22 @@
 import java.time.LocalDate;
 
 public class Event {
-    private String description;
     private LocalDate date;
+    private String description;
     private Category category;
 
-    public Event(String description, LocalDate date, Category category) {
-        this.description = description;
+    public Event(LocalDate date, String description, Category category) {
         this.date = date;
+        this.description = description;
         this.category = category;
-    }
-
-    public String getDescription() {
-        return this.description;
     }
 
     public LocalDate getDate() {
         return this.date;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     public Category getCategory() {
