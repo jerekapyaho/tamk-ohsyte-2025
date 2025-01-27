@@ -15,7 +15,5 @@ public class PointTest {
         System.out.println("c = " + c);
 
         System.out.println("Point objects generated = " + Point.getCount());
-
-        System.out.println(Math.sin(Math.toRadians(60.0)));
     }
 }
