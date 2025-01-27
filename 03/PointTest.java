@@ -9,7 +9,7 @@ public class PointTest {
         System.out.println("b = " + b);
 
         double d = a.distanceTo(b);
-        System.out.println("d = " + String.format("%.1f", d));
+        System.out.println("Distance between a and b = " + Double.toString(d));
 
         Point c = new Point(10, a.getY());
         System.out.println("c = " + c);
