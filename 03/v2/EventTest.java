@@ -6,7 +6,6 @@ public class EventTest {
 
         Event[] events = new Event[args.length];
         for (int i = 0; i < args.length; i++) {
-            LocalDate today = LocalDate.now();
             Event event = new Event(LocalDate.now(), args[i], category);
             events[i] = event;
         }
