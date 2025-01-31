@@ -28,13 +28,26 @@ Or, set it just for the next run:
 
     BIRTHDATE=1989-11-06 java EnvTest.java BIRTHDATE
 
-In Windows, use the `setx` command from Command Prompt:
+In Windows, use the `set` command in Command Prompt:
+
+    set BIRTHDATE=1989-11-06
+    
+To set the environment variable permanently, use the `setx` command:
 
     setx BIRTHDATE 1989-11-06
+
+You may still need to restart Command Prompt before the setting
+takes effect (?).
 
 Check the setting with the `echo` command:
 
     echo %BIRTHDATE%
+
+in Windows, or 
+
+    echo $BIRTHDATE
+
+in Linux and macOS.
 
 ## JShell
 
