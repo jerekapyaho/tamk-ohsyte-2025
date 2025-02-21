@@ -18,6 +18,10 @@ public class SingularEvent extends Event implements Comparable<Event> {
         return this.date;
     }
 
+    public int getYear() {
+        return this.date.getYear();
+    }
+
     /**
      * Tests for equality with another event.
      *

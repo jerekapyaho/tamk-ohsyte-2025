@@ -35,7 +35,7 @@ public class Today {
         }
 
         System.out.println("Today:");
-        Collections.sort(annualEvents);
+        Collections.sort(annualEvents, new AnnualEventComparator());
 
         for (AnnualEvent a : annualEvents) {
             System.out.printf(
@@ -46,7 +46,7 @@ public class Today {
         //System.out.printf("%d events%n", annualEvents.size());
 
         System.out.println("\nToday in history:");
-        Collections.sort(singularEvents);
+        Collections.sort(singularEvents, new SingularEventComparator());
         Collections.reverse(singularEvents);
 
         for (SingularEvent s : singularEvents) {
