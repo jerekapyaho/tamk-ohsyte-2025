@@ -37,7 +37,10 @@ public class Today {
         Collections.sort(annualEvents);
 
         for (AnnualEvent a : annualEvents) {
-            System.out.printf("- %s%n", a.getDescription());
+            System.out.printf(
+                    "- %s (%s) %n",
+                    a.getDescription(),
+                    a.getCategory());
         }
         //System.out.printf("%d events%n", annualEvents.size());
 
@@ -45,11 +48,18 @@ public class Today {
         Collections.sort(singularEvents);
         Collections.reverse(singularEvents);
 
-        /*
         for (SingularEvent s : singularEvents) {
-            System.out.printf("%d: %s%n", s.getDate().getYear(), s.getDescription());
+            int year = s.getDate().getYear();
+            if (year < 2010) {
+                continue;
+            }
+
+            System.out.printf(
+                    "%d: %s (%s)%n",
+                    year,
+                    s.getDescription(),
+                    s.getCategory());
         }
-        */
-        System.out.printf("%d events%n", singularEvents.size());
+        //System.out.printf("%d events%n", singularEvents.size());
     }
 }
