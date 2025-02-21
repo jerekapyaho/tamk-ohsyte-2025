@@ -1,6 +1,7 @@
 package tamk.ohsyte;
 
 import java.time.LocalDate;
+import java.time.MonthDay;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -8,7 +9,7 @@ import java.util.Objects;
  * Represents an event that has occurred once in history.
  */
 public class SingularEvent extends Event implements Comparable<Event> {
-    private LocalDate date;
+    private int year;
 
     /**
      * Constructs a singular event with date, description, and category.
@@ -19,9 +20,9 @@ public class SingularEvent extends Event implements Comparable<Event> {
      */
     public SingularEvent(LocalDate date, String description, Category category) {
         // Call the superclass constructor to initialize
-        super(description, category);
+        super(MonthDay.of(date.getMonth(), date.getDayOfMonth()), description, category);
 
-        this.date = date;
+        this.year = date.getYear();
     }
 
     /**
@@ -30,16 +31,19 @@ public class SingularEvent extends Event implements Comparable<Event> {
      * @return the date
      */
     public LocalDate getDate() {
-        return this.date;
+        return LocalDate.of(
+            this.year, 
+            this.getMonthDay().getMonth(),
+            this.getMonthDay().getDayOfMonth());
     }
 
     /**
-     * Convenience method to return just the year of the date.
+     * Gets the year of this event.
      *
      * @return the year
      */
     public int getYear() {
-        return this.date.getYear();
+        return this.year;
     }
 
     /**
@@ -58,9 +62,10 @@ public class SingularEvent extends Event implements Comparable<Event> {
         // Cast to our type:
         SingularEvent that = (SingularEvent) o;
 
-        if (Objects.equals(this.getDate(), that.getDate()) &&
-                Objects.equals(this.getDescription(), that.getDescription()) &&
-                Objects.equals(this.getCategory(), that.getCategory())) {
+        if (Objects.equals(this.year, that.year) && 
+            Objects.equals(this.getMonthDay(), that.getMonthDay()) &&
+            Objects.equals(this.getDescription(), that.getDescription()) &&
+            Objects.equals(this.getCategory(), that.getCategory())) {
             return true;
         }
 
@@ -74,7 +79,7 @@ public class SingularEvent extends Event implements Comparable<Event> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(this.getDate(), this.getDescription(), this.getCategory());
+        return Objects.hash(this.year, this.getMonthDay(), this.getDescription(), this.getCategory());
     }
 
     /**
@@ -88,13 +93,21 @@ public class SingularEvent extends Event implements Comparable<Event> {
         SingularEvent otherEvent = (SingularEvent) other;
 
         int result = Objects.compare(
-                this.date,
-                otherEvent.date,
+                this.year,
+                otherEvent.year,
                 Comparator.naturalOrder());
         if (result != 0) {
             return result;
         }
 
+        result = Objects.compare(
+            this.getMonthDay(),
+            otherEvent.getMonthDay(),
+            Comparator.naturalOrder());
+        if (result != 0) {
+            return result;
+        }
+        
         result = Objects.compare(
                 this.getDescription(),
                 otherEvent.getDescription(),

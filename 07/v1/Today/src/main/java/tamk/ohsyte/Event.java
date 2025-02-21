@@ -2,6 +2,7 @@ package tamk.ohsyte;
 
 import java.util.Objects;
 import java.util.Comparator;
+import java.time.MonthDay;
 
 /**
  * Abstract superclass for representing an event in history.
@@ -11,17 +12,31 @@ public abstract class Event implements Comparable<Event> {
     private Category category;
     private String description;
 
+    // All events also have at least a MonthDay.
+    private MonthDay monthDay;
+
     /**
      * Constructor that can be used by the subclasses.
      * 
+     * @param monthDay the month-day of the event
      * @param description the description of the event
      * @param category the category of the event
      * 
      * @see Category
      */
-    public Event(String description, Category category) {
+    public Event(MonthDay monthDay, String description, Category category) {
+        this.monthDay = monthDay;
         this.description = description;
         this.category = category;
+    }
+
+    /**
+     * Gets the month-day of the event.
+     * 
+     * @return month-day
+     */
+    public MonthDay getMonthDay() {
+        return this.monthDay;
     }
 
     /**
@@ -71,7 +86,8 @@ public abstract class Event implements Comparable<Event> {
         // Cast to our type:
         Event that = (Event) o;
 
-        if (Objects.equals(this.description, that.description) &&
+        if (Objects.equals(this.monthDay, that.monthDay) && 
+            Objects.equals(this.description, that.description) &&
             Objects.equals(this.category, that.category)) {
             return true;
         }
@@ -86,6 +102,6 @@ public abstract class Event implements Comparable<Event> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(this.description, this.category);
+        return Objects.hash(this.monthDay, this.description, this.category);
     }
 }
