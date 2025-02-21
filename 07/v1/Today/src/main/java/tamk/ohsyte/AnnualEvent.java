@@ -4,15 +4,30 @@ import java.time.MonthDay;
 import java.util.Comparator;
 import java.util.Objects;
 
+/**
+ * Represents an event that occurs once a year on a given day.
+ */
 public class AnnualEvent extends Event implements Comparable<Event> {
     private MonthDay monthDay;
 
+    /**
+     * Constructs an annual event from a month-day, description, and category.
+     *
+     * @param monthDay the day and month of the event
+     * @param description the description of the event
+     * @param category the category of the event
+     */
     public AnnualEvent(MonthDay monthDay, String description, Category category) {
         super(description, category);
 
         this.monthDay = monthDay;
     }
 
+    /**
+     * Gets the month-day of this event.
+     *
+     * @return the month-day
+     */
     public MonthDay getMonthDay() {
         return this.monthDay;
     }

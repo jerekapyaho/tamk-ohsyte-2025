@@ -4,9 +4,19 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Objects;
 
+/**
+ * Represents an event that has occurred once in history.
+ */
 public class SingularEvent extends Event implements Comparable<Event> {
     private LocalDate date;
 
+    /**
+     * Constructs a singular event with date, description, and category.
+     *
+     * @param date the date of the event
+     * @param description the description of the event
+     * @param category the category of the event
+     */
     public SingularEvent(LocalDate date, String description, Category category) {
         // Call the superclass constructor to initialize
         super(description, category);
@@ -14,10 +24,20 @@ public class SingularEvent extends Event implements Comparable<Event> {
         this.date = date;
     }
 
+    /**
+     * Gets the date of the event.
+     *
+     * @return the date
+     */
     public LocalDate getDate() {
         return this.date;
     }
 
+    /**
+     * Convenience method to return just the year of the date.
+     *
+     * @return the year
+     */
     public int getYear() {
         return this.date.getYear();
     }
