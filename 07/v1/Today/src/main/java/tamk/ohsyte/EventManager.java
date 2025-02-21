@@ -1,5 +1,6 @@
 package tamk.ohsyte;
 
+import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -64,11 +65,21 @@ public class EventManager {
         return events;
     }
 
-    /**
-     * Gets the number of event providers for the manager.
-     *
-     * @return the number of event providers
-     */
+    public List<Event> getEventsOfDate(MonthDay monthDay) {
+        List<Event> events = new ArrayList<>();
+
+        for (EventProvider provider : this.eventProviders) {
+            events.addAll(provider.getEventsOfDate(monthDay));
+        }
+
+        return events;
+    }
+
+        /**
+         * Gets the number of event providers for the manager.
+         *
+         * @return the number of event providers
+         */
     public int getEventProviderCount() {
         return this.eventProviders.size();
     }

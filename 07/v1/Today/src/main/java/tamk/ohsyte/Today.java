@@ -22,7 +22,8 @@ public class Today {
         fileName = "/Users/jere/Projects/Java/tamk-ohsyte-2025/07/singular-events.csv";
         manager.addEventProvider(new CSVEventProvider(fileName));
 
-        List<Event> allEvents = manager.getAllEvents();
+        MonthDay today = MonthDay.now();
+        List<Event> allEvents = manager.getEventsOfDate(today);
         List<AnnualEvent> annualEvents = new ArrayList<>();
         List<SingularEvent> singularEvents = new ArrayList<>();
         for (Event event : allEvents) {
@@ -50,7 +51,7 @@ public class Today {
 
         for (SingularEvent s : singularEvents) {
             int year = s.getDate().getYear();
-            if (year < 2010) {
+            if (year < 2015) {
                 continue;
             }
 

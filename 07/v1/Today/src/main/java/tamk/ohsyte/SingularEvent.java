@@ -19,6 +19,41 @@ public class SingularEvent extends Event implements Comparable<Event> {
     }
 
     /**
+     * Tests for equality with another event.
+     *
+     * @return true if events are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object o) {
+        // Identical references?
+        if (o == this) return true;
+
+        // Correct type and non-null?
+        if (!(o instanceof SingularEvent)) return false;
+
+        // Cast to our type:
+        SingularEvent that = (SingularEvent) o;
+
+        if (Objects.equals(this.getDate(), that.getDate()) &&
+                Objects.equals(this.getDescription(), that.getDescription()) &&
+                Objects.equals(this.getCategory(), that.getCategory())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a hash code for this event.
+     *
+     * @return hash code computed based on the fields
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getDate(), this.getDescription(), this.getCategory());
+    }
+
+    /**
      * Compares this event to another.
      *
      * @return negative, zero, or positive
