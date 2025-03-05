@@ -37,9 +37,17 @@ public class Today {
             }
         }
 
+        String eventProviderId = "standard";
+
         // Add a CSV event provider that reads from the given file.
         manager.addEventProvider(
-                new CSVEventProvider(path.toString(), "standard"));
+                new CSVEventProvider(path.toString(), eventProviderId));
+
+        // Try to add an event provider with the same ID again:
+        if (!manager.addEventProvider(
+                new CSVEventProvider(path.toString(), eventProviderId))) {
+            System.err.printf("Event provider '%s' is already registered%n", eventProviderId);
+        }
     }
 
     public static void main(String[] args) {
