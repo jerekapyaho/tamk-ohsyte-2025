@@ -69,6 +69,7 @@ public class Today {
                     .uri(serverUri)
                     .GET()
                     .build();
+            System.out.println(String.format("About to make HTTP request to %s%n", serverUri));
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String bodyString = response.body();
             int status = response.statusCode();

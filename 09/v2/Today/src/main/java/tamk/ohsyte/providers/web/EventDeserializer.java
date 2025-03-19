@@ -17,6 +17,13 @@ public class EventDeserializer extends JsonDeserializer<Event> {
     public Event deserialize(JsonParser parser, DeserializationContext deserializer) throws IOException {
         Event event = null;
 
+        /*
+        {
+            "category": "test/fake",
+            "date": "1985-03-17",
+            "description": "Cisco develops secure blockchain-based routing protocols"
+        }
+         */
         JsonNode node = parser.getCodec().readTree(parser);
         String categoryString = node.get("category").asText();
         String dateString = node.get("date").asText();

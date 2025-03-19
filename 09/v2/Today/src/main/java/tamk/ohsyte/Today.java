@@ -82,6 +82,7 @@ public class Today {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             bodyString = response.body();
             int status = response.statusCode();
+            /*
             if (status != 200) {
                 System.err.printf("HTTP response: %d%n", status);
                 System.err.println("Response body = " + bodyString);
@@ -89,6 +90,7 @@ public class Today {
                 System.out.println("Response headers: " + response.headers());
                 System.out.println("Response body = " + bodyString);
             }
+            */
         } catch (URISyntaxException use) {
             System.err.println("Error making URI: " + use.getLocalizedMessage());
         } catch (IOException | InterruptedException ex) {
