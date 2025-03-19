@@ -1,9 +1,6 @@
 package tamk.ohsyte;
 
-import tamk.ohsyte.datamodel.AnnualEvent;
-import tamk.ohsyte.datamodel.Category;
-import tamk.ohsyte.datamodel.Event;
-import tamk.ohsyte.datamodel.SingularEvent;
+import tamk.ohsyte.datamodel.*;
 
 import java.time.LocalDate;
 import java.time.MonthDay;
@@ -30,10 +27,16 @@ public class EventFactory {
             MonthDay monthDay = MonthDay.parse(dateString);
             //System.out.printf("Making AnnualEvent: %s, %s, %s%n", dateString, description, category);
             return new AnnualEvent(monthDay, description, category);
-        } else {
+        }
+
+        if (Character.isDigit(dateString.charAt(0))) {
             LocalDate date = LocalDate.parse(dateString);
             //System.out.printf("Making SingularEvent: %s, %s, %s%n", dateString, description, category);
             return new SingularEvent(date, description, category);
         }
+
+        // Doesn't start with "--" or a digit, so could be a verbal rule
+        Rule rule = VerbalRule.parse(dateString);
+        return new RuleBasedEvent(rule, description, category);
     }
 }

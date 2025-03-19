@@ -1,9 +1,12 @@
 package tamk.ohsyte;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,11 +15,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import tamk.ohsyte.commands.ListEvents;
 import tamk.ohsyte.commands.ListProviders;
-import tamk.ohsyte.datamodel.AnnualEvent;
-import tamk.ohsyte.datamodel.AnnualEventComparator;
-import tamk.ohsyte.datamodel.Event;
-import tamk.ohsyte.datamodel.SingularEvent;
-import tamk.ohsyte.datamodel.SingularEventComparator;
+import tamk.ohsyte.datamodel.*;
 import tamk.ohsyte.providers.CSVEventProvider;
 import tamk.ohsyte.providers.SQLiteEventProvider;
 
@@ -50,9 +49,18 @@ public class Today {
         manager.addEventProvider(
                 new CSVEventProvider(csvPath.toString(), eventProviderId));
 
+        // Add an SQLite database event provider.
         Path databasePath = Paths.get(homeDirectory, configDirectory, "events.sqlite3");
         manager.addEventProvider(
                 new SQLiteEventProvider(databasePath.toString()));
+
+        // Test a rule-based event. Does not apply to LocalDate.now(),
+        // all events of this type should be checked separately against
+        // the month-day.
+        Rule rule = VerbalRule.parse("fourth thursday in november");
+        RuleBasedEvent rbe = new RuleBasedEvent(rule,
+                "Thanksgiving (U.S.A.)", new Category("society", "holiday"));
+        System.out.println(rbe);
     }
 
     public static void main(String[] args) {

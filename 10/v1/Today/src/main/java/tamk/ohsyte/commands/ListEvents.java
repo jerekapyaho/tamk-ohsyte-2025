@@ -52,6 +52,7 @@ public class ListEvents implements Runnable {
                 System.err.println("Invalid date string: '" + this.dateOptionString + "'");
                 return;
             }
+            System.out.printf("Events for %s:%n%n", monthDay);
         } else {
             //System.out.println("DEBUG: No date specified, default to now");
             monthDay = MonthDay.now();
@@ -86,7 +87,7 @@ public class ListEvents implements Runnable {
 
             for (AnnualEvent a : annualEvents) {
                 System.out.printf(
-                        "- %s (%s) %n",
+                        "- %s (%s)%n",
                         a.getDescription(),
                         a.getCategory());
             }
