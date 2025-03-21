@@ -75,7 +75,6 @@ public class EventManager {
         return events;
     }
 
-    /*
     public List<Event> getEventsOfDate(MonthDay monthDay) {
         List<Event> events = new ArrayList<>();
 
@@ -85,7 +84,6 @@ public class EventManager {
 
         return events;
     }
-    */
 
     /**
      * Gets the number of event providers for the manager.

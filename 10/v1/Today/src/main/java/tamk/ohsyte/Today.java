@@ -17,6 +17,7 @@ import tamk.ohsyte.commands.ListEvents;
 import tamk.ohsyte.commands.ListProviders;
 import tamk.ohsyte.datamodel.*;
 import tamk.ohsyte.providers.CSVEventProvider;
+import tamk.ohsyte.providers.EventProvider;
 import tamk.ohsyte.providers.SQLiteEventProvider;
 
 @Command(name = "today", subcommands = { ListProviders.class, ListEvents.class }, description = "Shows events from history and annual observations")
@@ -51,8 +52,14 @@ public class Today {
 
         // Add an SQLite database event provider.
         Path databasePath = Paths.get(homeDirectory, configDirectory, "events.sqlite3");
-        manager.addEventProvider(
-                new SQLiteEventProvider(databasePath.toString()));
+        EventProvider sqliteEventProvider = new SQLiteEventProvider(databasePath.toString());
+        manager.addEventProvider(sqliteEventProvider);
+
+        /*
+        System.out.println("TEST SQLiteEventProvider");
+        List<Event> sqliteEvents = sqliteEventProvider.getEventsOfDate(MonthDay.of(3, 21));
+        System.out.printf("Got %d events from SQLiteEventProvider%n", sqliteEvents.size());
+         */
     }
 
     public static void main(String[] args) {
