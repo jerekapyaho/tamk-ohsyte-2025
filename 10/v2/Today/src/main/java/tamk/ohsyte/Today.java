@@ -1,15 +1,9 @@
 package tamk.ohsyte;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.MonthDay;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -53,6 +47,21 @@ public class Today {
         Path databasePath = Paths.get(homeDirectory, configDirectory, "events.sqlite3");
         manager.addEventProvider(
                 new SQLiteEventProvider(databasePath.toString()));
+
+        // Test a rule-based event. Does not apply to LocalDate.now(),
+        // all events of this type should be checked separately against
+        // the month-day.
+        RuleBasedEvent thanksgiving = new RuleBasedEvent(
+                VerbalRule.parse("fourth thursday in november"),
+                "Thanksgiving (U.S.A.)",
+                new Category("usa", "holiday"));
+        System.out.println(thanksgiving);
+
+        RuleBasedEvent mothersDayFinland = new RuleBasedEvent(
+                VerbalRule.parse("second sunday in may"),
+                "Äitienpäivä (Suomi)",
+                new Category("finland", "flagday"));
+        System.out.println(mothersDayFinland);
     }
 
     public static void main(String[] args) {

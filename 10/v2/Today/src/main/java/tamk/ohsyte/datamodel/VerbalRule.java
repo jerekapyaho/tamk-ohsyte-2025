@@ -42,30 +42,34 @@ public class VerbalRule implements Rule {
         //   weekday: Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday
         //   month: January|February|March| ... |November|December
         String[] parts = ruleString.split(" ");
-        System.out.println(Arrays.toString(parts));
+        //System.out.println(Arrays.toString(parts));
         if (parts.length != 4) {
             throw new IllegalArgumentException("Invalid rule format");
         }
 
-        List<String> ordinals = List.of("first", "second", "third", "fourth", "fifth", "last");
-        System.out.println(Arrays.toString(ordinals.toArray()));
-        if (!ordinals.contains(parts[0])) {
-            throw new IllegalArgumentException("Unrecognized ordinal: " + parts[0]);
-        }
-        Ordinal ordinal = Ordinal.valueOf(parts[0].toUpperCase());
+        String ordinalString = parts[0];
+        String dayString = parts[1];
+        String monthString = parts[3];
 
-        List<String> weekdays = List.of("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday");
-        System.out.println(Arrays.toString(weekdays.toArray()));
-        if (!weekdays.contains(parts[1].toLowerCase())) {
-            throw new IllegalArgumentException("Unknown weekday: " + parts[1]);
+        final List<String> ordinals = List.of("first", "second", "third", "fourth", "fifth", "last");
+        //System.out.println(Arrays.toString(ordinals.toArray()));
+        if (!ordinals.contains(ordinalString)) {
+            throw new IllegalArgumentException("Unrecognized ordinal: " + ordinalString);
         }
-        DayOfWeek day = DayOfWeek.valueOf(parts[1].toUpperCase());
+        Ordinal ordinal = Ordinal.valueOf(ordinalString.toUpperCase());
 
-        List<String> months = List.of("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december");
-        if (!months.contains(parts[3])) {
-            throw new IllegalArgumentException("Unknown month: " + parts[3]);
+        final List<String> weekdays = List.of("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday");
+        //System.out.println(Arrays.toString(weekdays.toArray()));
+        if (!weekdays.contains(dayString.toLowerCase())) {
+            throw new IllegalArgumentException("Unknown weekday: " + dayString);
         }
-        Month month = Month.valueOf(parts[3].toUpperCase());
+        DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase());
+
+        final List<String> months = List.of("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december");
+        if (!months.contains(monthString)) {
+            throw new IllegalArgumentException("Unknown month: " + monthString);
+        }
+        Month month = Month.valueOf(monthString.toUpperCase());
 
         return new VerbalRule(ordinal, day, month);
     }
