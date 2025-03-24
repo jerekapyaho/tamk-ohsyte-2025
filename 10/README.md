@@ -6,6 +6,8 @@ store and retrieve data to and from a compatible SQL database.
 The easiest SQL database to work with is SQLite. It needs no server,
 since the database is all in one file. The [sqlite-jdbc](https://github.com/xerial/sqlite-jdbc) driver is required.
 
+For more information about JDBC, see [JDBC Basics](https://docs.oracle.com/javase/tutorial/jdbc/basics/index.html) or a dozen others like it.
+
 ## Creating the database
 
 Use the SQLite command line interface to create the database file
@@ -62,8 +64,44 @@ Synchronize the project if necessary.
 
 ## Connecting to the database
 
-TBD
+To connect to the database with JDBC you need a URL. The protocol is "jdbc",
+followed by the database type (in our case "sqlite"). Because an SQLite database
+is one flat file, you need to also have the filename in the URI. An example
+could be
+
+    jdbc:sqlite:events.sqlite3
+
+where "events.sqlite3" is the file name (it could have also a path).
+
+Use the `java.sql.DriverManager` class to connect to the database, 
+and handle any `java.sql.SQLException`s.
+
+Typically a [try-with-resources construct](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html) is used to ensure that the database
+connection is automatically closed.
 
 ## Retrieving data from the database
 
-TBD
+To retrieve data you need to use the SQL SELECT statement. Use the database
+connection to create a `java.sql.Statement` with the query, then execute
+the statement with the `executeQuery` method of the `Statement` object.
+
+Executing the query gives you back a `java.sql.ResultSet` which you then 
+need to examine and pick out the relevant parts. Typically you process the
+whole result set by calling the `next` method until it returns `false`.
+
+You could also use a `PreparedStatement`, especially if you need many
+parameters in the SQL query.
+
+## Inserting data into the database
+
+To insert data into the database, you use a database connection and a
+statement, but the SQL statement is iNSERT instead of SELECT, and you
+need to call the `executeUpdate` method.
+
+Note that in the case of the events database, you need to find out
+the category ID of the event category. If the category does not exist
+in the database, you need to create a new one. So, you will need to 
+fetch the categories first, and then use an INSERT statement to add 
+a new category if necessary, and save its category ID. 
+Only after that can you insert the new event with the correct category.
+If the event category is an existing one, you can just use its ID.
