@@ -62,6 +62,12 @@ public class Today {
                 "Äitienpäivä (Suomi)",
                 new Category("finland", "flagday"));
         System.out.println(mothersDayFinland);
+
+        RuleBasedEvent testEvent = new RuleBasedEvent(
+                VerbalRule.parse("second wednesday in december"),
+                "Second Wednesday in December",
+                new Category("test", "test"));
+        System.out.println(testEvent);
     }
 
     public static void main(String[] args) {
