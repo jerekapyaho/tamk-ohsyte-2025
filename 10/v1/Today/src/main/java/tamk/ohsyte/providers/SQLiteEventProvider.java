@@ -170,7 +170,7 @@ public class SQLiteEventProvider implements EventProvider {
 
         var query = "SELECT strftime('%m-%d', event_date) as ed, event_description, category_id FROM event"
                 + " WHERE ed = '" + monthDay.toString().substring(2) + "'";
-
+        System.out.printf("DEBUG: query = %s%n", query);
         try (var connection = DriverManager.getConnection(url);
              var statement = connection.createStatement();
              var rs = statement.executeQuery(query)) {

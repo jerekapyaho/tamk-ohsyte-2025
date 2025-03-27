@@ -55,11 +55,9 @@ public class Today {
         EventProvider sqliteEventProvider = new SQLiteEventProvider(databasePath.toString());
         manager.addEventProvider(sqliteEventProvider);
 
-        /*
         System.out.println("TEST SQLiteEventProvider");
-        List<Event> sqliteEvents = sqliteEventProvider.getEventsOfDate(MonthDay.of(3, 21));
+        List<Event> sqliteEvents = sqliteEventProvider.getEventsOfDate(MonthDay.of(3, 24));
         System.out.printf("Got %d events from SQLiteEventProvider%n", sqliteEvents.size());
-         */
     }
 
     public static void main(String[] args) {
