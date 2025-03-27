@@ -1,7 +1,6 @@
 package tamk.ohsyte.eventadder;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -81,9 +80,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-
-        EventManager manager = EventManager.getInstance();
-
         // Construct a path to a file in the user's home directory,
         // in a subdirectory called ".today".
         String homeDirectory = System.getProperty("user.home");
@@ -101,17 +97,17 @@ public class App extends Application {
             }
         }
 
-        String eventProviderId = "standard";
+        EventManager manager = EventManager.getInstance();
 
         // Add a CSV event provider that reads from the given file.
         manager.addEventProvider(
-                new CSVEventProvider(csvPath.toString(), eventProviderId));
+                new CSVEventProvider(csvPath.toString(), "standard"));
 
         // Add an SQLite database event provider.
         Path databasePath = Paths.get(homeDirectory, configDirectory, "events.sqlite3");
         EventProvider sqliteEventProvider = new SQLiteEventProvider(databasePath.toString());
         manager.addEventProvider(sqliteEventProvider);
 
-        launch();
+        launch();  // launch the JavaFX app
     }
 }
