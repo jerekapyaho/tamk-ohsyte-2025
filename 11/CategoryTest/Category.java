@@ -5,7 +5,18 @@ import java.util.Objects;
  * The category of an event, with primary and secondary categories.
  * Implemented as a Java record (since Java 16).
  */
-public record Category(String primary, String secondary) {
+public record Category(String primary, String secondary) implements Comparable<Category> {
+    @Override
+    public int compareTo(Category otherCategory) {
+        // First compare by primary category
+        int primaryComparison = this.primary().compareTo(otherCategory.primary());
+        if (primaryComparison != 0) {
+            return primaryComparison;
+        }
+
+        // If primary category is the same, compare by secondary
+        return this.secondary().compareTo(otherCategory.secondary());
+    }
 
     /**
      * Parse a category string in the format "primary"
@@ -26,10 +37,13 @@ public record Category(String primary, String secondary) {
         }
 
         String[] categoryParts = categoryString.split("/");
-        if (categoryParts.length != 2) {
+        switch (categoryParts.length) {
+        case 1:
+            return new Category(categoryParts[0], "");
+        case 2:
+            return new Category(categoryParts[0], categoryParts[1]);
+        default:
             throw new IllegalArgumentException(message);
         }
-
-        return new Category(categoryParts[0], categoryParts[1]);
     }
 }
