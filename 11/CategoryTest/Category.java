@@ -1,0 +1,35 @@
+
+import java.util.Objects;
+
+/**
+ * The category of an event, with primary and secondary categories.
+ * Implemented as a Java record (since Java 16).
+ */
+public record Category(String primary, String secondary) {
+
+    /**
+     * Parse a category string in the format "primary"
+     * or "primary/secondary" and make a category of them.
+     * Folds the category parts to lower case.
+     * Throws java.lang.IllegalArgumentException if the
+     * string is of the wrong format.
+     *
+     * @param categoryString the string to parse
+     * @return new category
+     */
+    public static Category parse(String categoryString) {
+        Objects.requireNonNull(categoryString);
+
+        String message = "category should be primary/secondary";
+        if (categoryString.isBlank()) {
+            throw new IllegalArgumentException(message);
+        }
+
+        String[] categoryParts = categoryString.split("/");
+        if (categoryParts.length != 2) {
+            throw new IllegalArgumentException(message);
+        }
+
+        return new Category(categoryParts[0], categoryParts[1]);
+    }
+}
