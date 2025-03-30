@@ -6,6 +6,8 @@ import tamk.ohsyte.datamodel.Event;
 import tamk.ohsyte.filters.EventFilter;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -24,18 +26,57 @@ public class SQLiteEventProvider implements EventProvider {
     /**
      * Constructs a new SQLite event provider with a database filename.
      *
-     * @param fileName the name of the SQLite database file
+     * @param databasePath the path to the SQLite database file
      */
-    public SQLiteEventProvider(String fileName) {
-        this.url = "jdbc:sqlite:" + fileName;
+    public SQLiteEventProvider(Path databasePath) throws SQLException {
+        this.url = "jdbc:sqlite:" + databasePath;
         // TODO: normalize path separators to '/'
-        //System.out.println("Database URL string = " + this.url);
+        System.out.println("Database URL string = " + this.url);
+        if (!Files.exists(databasePath)) {
+            System.err.println("Database does not exist, creating it");
+            this.createDatabase(databasePath);
+        }
 
         // Get the categories found in the database and cache them.
         // This way we don't need to keep fetching them over again.
         // We pass an empty list of IDs so that we get them all.
         this.categories = this.getCategories(List.of());
         //System.out.printf("Got %d categories from database%n", this.categories.keySet().size());
+    }
+
+    private void createDatabase(Path databasePath) throws SQLException {
+        var connection = DriverManager.getConnection(this.url);
+        if (connection != null) {
+            var meta = connection.getMetaData();
+            System.err.println("Database driver name = " + meta.getDriverName());
+            System.err.println("New database created.");
+
+            // Create the database tables. Use text blocks (since Java 15).
+            var query = """
+                CREATE TABLE IF NOT EXISTS category(
+                category_id INTEGER PRIMARY KEY,
+                primary_name TEXT NOT NULL,
+                secondary_name TEXT)""";
+            var statement = connection.createStatement();
+            statement.execute(query);
+            statement.close();
+            System.err.println("Created category table");
+
+            query = """
+                    CREATE TABLE IF NOT EXISTS event(
+                    event_id INTEGER PRIMARY KEY,
+                    event_date DATE NOT NULL,
+                    event_description TEXT NOT NULL,
+                    category_id INTEGER NOT NULL,
+                    FOREIGN KEY (category_id) REFERENCES category(category_id))""";
+
+            statement = connection.createStatement();
+            statement.execute(query);
+            statement.close();
+            System.err.println("Created event table");
+
+            connection.close();
+        }
     }
 
     /*

@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,17 +32,23 @@ public class Today {
         // in a subdirectory called ".today".
         String homeDirectory = System.getProperty("user.home");
         String configDirectory = ".today";
+        Path configPath = Paths.get(homeDirectory, configDirectory);
         Path csvPath = Paths.get(homeDirectory, configDirectory, "events.csv");
         //System.out.println("Path = " + path.toString());
-
-        // Create the events file if it doesn't exist
-        if (!Files.exists(csvPath)) {
-            try {
-                Files.createFile(csvPath);
-            } catch (IOException e) {
-                System.err.println("Unable to create events file");
-                System.exit(1);
+        try {
+            // Create the config directory if it doesn't exist
+            if (!Files.exists(configPath)) {
+                Files.createDirectory(configPath);
+                System.err.println("Config directory " + configPath + " created");
             }
+
+            // Create the events file if it doesn't exist
+            if (!Files.exists(csvPath)) {
+                Files.createFile(csvPath);
+            }
+        } catch (IOException e) {
+            System.err.println("Unable to create config directory or events file, error = " + e.getLocalizedMessage());
+            System.exit(1);
         }
 
         String eventProviderId = "standard";
@@ -52,8 +59,13 @@ public class Today {
 
         // Add an SQLite database event provider.
         Path databasePath = Paths.get(homeDirectory, configDirectory, "events.sqlite3");
-        EventProvider sqliteEventProvider = new SQLiteEventProvider(databasePath.toString());
-        manager.addEventProvider(sqliteEventProvider);
+        try {
+            EventProvider sqliteEventProvider = new SQLiteEventProvider(databasePath);
+            manager.addEventProvider(sqliteEventProvider);
+        } catch (SQLException e) {
+            System.err.println("Error adding SQLite event provider: " + e.getLocalizedMessage());
+            System.exit(1);
+        }
 
         //System.out.println("TEST SQLiteEventProvider");
         //List<Event> sqliteEvents = sqliteEventProvider.getEventsOfDate(MonthDay.of(3, 24));

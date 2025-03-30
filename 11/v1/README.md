@@ -10,3 +10,5 @@ to the providers
 * `EventManager::getEventProviderIdentifiers` returns `Set` instead of `List`
 * Added `EventManager::getEvents(EventFilter filter)` (also to provider implementations)
 * Removed `providers/web` directory (web provider stuff will be in `providers`)
+* SQLiteEventProvider now creates the database and tables if they do not exist
+* Create config directory if it doesn't exist
