@@ -87,10 +87,12 @@ public class ListEvents implements Runnable {
             Collections.sort(annualEvents, new AnnualEventComparator());
 
             for (AnnualEvent a : annualEvents) {
+                final Category cat = a.getCategory();
+                String categoryString = cat.primary() + "/" + cat.secondary();
                 System.out.printf(
                         "- %s (%s)%n",
                         a.getDescription(),
-                        a.getCategory());
+                        categoryString);
             }
         }
 
@@ -102,11 +104,13 @@ public class ListEvents implements Runnable {
             for (SingularEvent s : singularEvents) {
                 int year = s.getDate().getYear();
 
+                final Category cat = s.getCategory();
+                String categoryString = cat.primary() + "/" + cat.secondary();
                 System.out.printf(
                         "%d: %s (%s)%n",
                         year,
                         s.getDescription(),
-                        s.getCategory());
+                        categoryString);
             }
         }
     }

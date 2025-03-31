@@ -1,6 +1,7 @@
 package tamk.ohsyte.providers;
 
 import tamk.ohsyte.EventFactory;
+import tamk.ohsyte.Today;
 import tamk.ohsyte.datamodel.Category;
 import tamk.ohsyte.datamodel.Event;
 import tamk.ohsyte.filters.EventFilter;
@@ -13,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.MonthDay;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
  * Uses the sqlite-jdbc driver (see pom.xml).
  */
 public class SQLiteEventProvider implements EventProvider {
+    private static Logger logger = Logger.getLogger(Today.LOGGER_NAME);
+
     private String url;
     private Map<Integer, String> categories;
 
@@ -31,9 +35,9 @@ public class SQLiteEventProvider implements EventProvider {
     public SQLiteEventProvider(Path databasePath) throws SQLException {
         this.url = "jdbc:sqlite:" + databasePath;
         // TODO: normalize path separators to '/'
-        System.out.println("Database URL string = " + this.url);
+        logger.info("Database URL string = " + this.url);
         if (!Files.exists(databasePath)) {
-            System.err.println("Database does not exist, creating it");
+            logger.info("Database does not exist, creating it");
             this.createDatabase(databasePath);
         }
 
@@ -41,15 +45,14 @@ public class SQLiteEventProvider implements EventProvider {
         // This way we don't need to keep fetching them over again.
         // We pass an empty list of IDs so that we get them all.
         this.categories = this.getCategories(List.of());
-        //System.out.printf("Got %d categories from database%n", this.categories.keySet().size());
     }
 
     private void createDatabase(Path databasePath) throws SQLException {
         var connection = DriverManager.getConnection(this.url);
         if (connection != null) {
             var meta = connection.getMetaData();
-            System.err.println("Database driver name = " + meta.getDriverName());
-            System.err.println("New database created.");
+            logger.info("Database driver name = " + meta.getDriverName());
+            logger.info("New database created.");
 
             // Create the database tables. Use text blocks (since Java 15).
             var query = """
@@ -60,7 +63,7 @@ public class SQLiteEventProvider implements EventProvider {
             var statement = connection.createStatement();
             statement.execute(query);
             statement.close();
-            System.err.println("Created category table");
+            logger.info("Created category table");
 
             query = """
                     CREATE TABLE IF NOT EXISTS event(
@@ -73,7 +76,7 @@ public class SQLiteEventProvider implements EventProvider {
             statement = connection.createStatement();
             statement.execute(query);
             statement.close();
-            System.err.println("Created event table");
+            logger.info("Created event table");
 
             connection.close();
         }
@@ -116,6 +119,7 @@ public class SQLiteEventProvider implements EventProvider {
                 result.put(categoryId, primaryName + "/" + secondaryName);
             }
         } catch (SQLException e) {
+            logger.severe(e.getMessage());
             System.err.println(e.getMessage());
         }
 
@@ -154,6 +158,7 @@ public class SQLiteEventProvider implements EventProvider {
                 result.add(event);
             }
         } catch (SQLException e) {
+            logger.severe(e.getMessage());
             System.err.println(e.getMessage());
         }
 
@@ -212,6 +217,7 @@ public class SQLiteEventProvider implements EventProvider {
                 result.add(event);
             }
         } catch (SQLException e) {
+            logger.severe(e.getMessage());
             System.err.println(e.getMessage());
         }
 
@@ -239,6 +245,7 @@ public class SQLiteEventProvider implements EventProvider {
                 result.add(event);
             }
         } catch (SQLException e) {
+            logger.severe(e.getMessage());
             System.err.println(e.getMessage());
         }
 

@@ -11,6 +11,7 @@ import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.*;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -23,6 +24,10 @@ import tamk.ohsyte.providers.SQLiteEventProvider;
 
 @Command(name = "today", subcommands = { ListProviders.class, ListEvents.class }, description = "Shows events from history and annual observations")
 public class Today {
+    public static final String LOGGER_NAME = "tamk.ohsyte.today";
+
+    private static Logger logger = Logger.getLogger(LOGGER_NAME);
+
     public Today() {
         // Gets the singleton manager. Later calls to getInstance
         // will return the same reference.
@@ -39,15 +44,22 @@ public class Today {
             // Create the config directory if it doesn't exist
             if (!Files.exists(configPath)) {
                 Files.createDirectory(configPath);
-                System.err.println("Config directory " + configPath + " created");
+                logger.info("Config directory " + configPath + " created");
             }
+
+            Path logPath = Paths.get(homeDirectory, configDirectory, "today.log");
+            Handler fh = new FileHandler(logPath.toString());
+            Logger.getLogger(LOGGER_NAME).addHandler(fh);
+            Logger.getLogger(LOGGER_NAME).setLevel(Level.FINEST);
 
             // Create the events file if it doesn't exist
             if (!Files.exists(csvPath)) {
                 Files.createFile(csvPath);
             }
         } catch (IOException e) {
-            System.err.println("Unable to create config directory or events file, error = " + e.getLocalizedMessage());
+            final String message = "Unable to create config directory or events file, error = " + e.getLocalizedMessage();
+            System.err.println(message);
+            logger.warning(message);
             System.exit(1);
         }
 
@@ -63,7 +75,9 @@ public class Today {
             EventProvider sqliteEventProvider = new SQLiteEventProvider(databasePath);
             manager.addEventProvider(sqliteEventProvider);
         } catch (SQLException e) {
-            System.err.println("Error adding SQLite event provider: " + e.getLocalizedMessage());
+            final String message = "Error adding SQLite event provider: " + e.getLocalizedMessage();
+            System.err.println(message);
+            logger.warning(message);
             System.exit(1);
         }
 
