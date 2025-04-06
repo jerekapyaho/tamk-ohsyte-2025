@@ -51,3 +51,27 @@ You would need to implement category string parsing (from "primary/secondary" to
 
 You can use the `chrono` crate to parse the ISO 8601 date strings
 into `NaiveDate` values.
+
+## Modeling different kinds of events
+
+Rust does not have classes or inheritance, but instead uses traits 
+and enumerated types for data modeling.
+
+The Rust enumerated type can be what is known as a "sum type", often
+found in functional languages. The different kinds of events of the 
+Java version could be defined in Rust like this:
+
+    enum Event {
+        Singular { date: NaiveDate, description: String, category: Category },
+        Annual { date: MonthDay, description: String, category: Category },
+    }
+
+The `MonthDay` struct needs to be defined since there isn't one 
+like `java.time.MonthDay` in the `chrono` crate:
+
+    struct MonthDay {
+        month: u32,
+        day: u32,
+    }
+
+... and so on.
