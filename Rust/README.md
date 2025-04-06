@@ -15,7 +15,7 @@ You can use Cargo to build the program:
     cargo build
 
 The executable will end up in the `target` subdirectory,
-under `degug` unless you specify `--release`.
+under `debug` unless you specify `--release`.
 
 You can run the program with
 
@@ -26,4 +26,28 @@ to some other directory that is in your `PATH`.
 
 ## External crates required
 
-The `Cargo.toml` file lists the dependencies.
+The `Cargo.toml` file lists the dependencies. They are called "crates".
+
+Rust has a fairly small standard library, so various external crates
+are used as semi-official solutions to common problems.
+
+The [`chrono`](https://crates.io/crates/chrono) crate deals with dates and times.
+
+## Parsing events from CSV
+
+Next stop would be to parse the event CSV file like in the 
+Java version. For one way to do it, see [Rudiments of Data Wrangling in Rust](https://dev.solita.fi/2021/09/03/rudiments-of-data-wrangling-in-rust.html). The most important crate you need is `csv`, as mentioned in the
+post.
+
+For the Today app you also need the category, which would be another
+struct, something like this:
+
+    struct Category {
+        primary: String,
+        secondary: String
+    }
+
+You would need to implement category string parsing (from "primary/secondary" to a `Category` value).
+
+You can use the `chrono` crate to parse the ISO 8601 date strings
+into `NaiveDate` values.
