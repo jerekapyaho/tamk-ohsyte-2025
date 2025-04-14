@@ -10,12 +10,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 import tamk.ohsyte.*;
-import tamk.ohsyte.datamodel.Event;
-import tamk.ohsyte.datamodel.AnnualEvent;
-import tamk.ohsyte.datamodel.SingularEvent;
-import tamk.ohsyte.datamodel.Category;
-import tamk.ohsyte.datamodel.AnnualEventComparator;
-import tamk.ohsyte.datamodel.SingularEventComparator;
+import tamk.ohsyte.datamodel.*;
 
 import tamk.ohsyte.filters.DateCategoryFilter;
 import tamk.ohsyte.filters.DateFilter;
@@ -58,7 +53,7 @@ public class ListEvents implements Runnable {
             monthDay = MonthDay.now();
         }
 
-        EventFilter filter = null;
+        EventFilter filter;
         // We always have a valid monthDay (defaults to 'now'),
         // so just check if we need category filtering.
         if (category != null) {
@@ -73,40 +68,44 @@ public class ListEvents implements Runnable {
 
         List<AnnualEvent> annualEvents = new ArrayList<>();
         List<SingularEvent> singularEvents = new ArrayList<>();
+        List<RuleBasedEvent> ruleBasedEvents = new ArrayList<>();
         for (Event event : filteredEvents) {
             if (event instanceof AnnualEvent) {
                 annualEvents.add((AnnualEvent) event);
             } else if (event instanceof SingularEvent) {
                 singularEvents.add((SingularEvent) event);
+            } else if (event instanceof RuleBasedEvent) {
+                ruleBasedEvents.add((RuleBasedEvent) event);
             }
         }
 
-        if (!annualEvents.isEmpty()) {
-            System.out.println("Observed today:");
-            Collections.sort(annualEvents, new AnnualEventComparator());
-
-            for (AnnualEvent a : annualEvents) {
-                System.out.printf(
-                        "- %s (%s)%n",
-                        a.getDescription(),
-                        a.getCategory());
-            }
+        Collections.sort(annualEvents, new AnnualEventComparator());
+        for (AnnualEvent a : annualEvents) {
+            System.out.printf(
+                    "- %s (%s)%n",
+                    a.getDescription(),
+                    a.getCategory());
         }
 
-        if (!singularEvents.isEmpty()) {
-            System.out.println("\nToday in history:");
-            Collections.sort(singularEvents, new SingularEventComparator());
-            Collections.reverse(singularEvents);
+        System.out.println();
+        for (RuleBasedEvent r : ruleBasedEvents) {
+            System.out.printf(
+                    "- %s (%s)%n",
+                    r.getDescription(),
+                    r.getCategory());
+        }
 
-            for (SingularEvent s : singularEvents) {
-                int year = s.getDate().getYear();
+        System.out.println();
+        Collections.sort(singularEvents, new SingularEventComparator());
+        Collections.reverse(singularEvents);
+        for (SingularEvent s : singularEvents) {
+            int year = s.getDate().getYear();
 
-                System.out.printf(
-                        "%d: %s (%s)%n",
-                        year,
-                        s.getDescription(),
-                        s.getCategory());
-            }
+            System.out.printf(
+                    "%d: %s (%s)%n",
+                    year,
+                    s.getDescription(),
+                    s.getCategory());
         }
     }
 }

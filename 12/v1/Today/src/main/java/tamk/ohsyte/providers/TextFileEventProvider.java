@@ -9,10 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import tamk.ohsyte.datamodel.AnnualEvent;
-import tamk.ohsyte.datamodel.Category;
-import tamk.ohsyte.datamodel.Event;
-import tamk.ohsyte.datamodel.SingularEvent;
+import tamk.ohsyte.datamodel.*;
 import tamk.ohsyte.EventFactory;
 
 /**
@@ -50,7 +47,7 @@ public class TextFileEventProvider implements EventProvider {
                     state = ReadingState.DONE;
                 }
 
-                System.err.println("state = " + state);
+                //System.err.println("state = " + state);
 
                 switch (state) {
                     case DATE:
@@ -120,6 +117,10 @@ public class TextFileEventProvider implements EventProvider {
                 AnnualEvent a = (AnnualEvent) event;
                 eventMonth = a.getMonthDay().getMonth();
                 eventDay = a.getMonthDay().getDayOfMonth();
+            } else if (event instanceof RuleBasedEvent) {
+                RuleBasedEvent r = (RuleBasedEvent) event;
+                eventMonth = r.getMonthDay().getMonth();
+                eventDay = r.getMonthDay().getDayOfMonth();
             } else {
                 throw new UnsupportedOperationException(
                         "Operation not supported for " +

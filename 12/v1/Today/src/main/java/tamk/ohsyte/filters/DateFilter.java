@@ -3,6 +3,7 @@ package tamk.ohsyte.filters;
 import java.time.MonthDay;
 
 import tamk.ohsyte.datamodel.Event;
+import tamk.ohsyte.datamodel.RuleBasedEvent;
 import tamk.ohsyte.datamodel.SingularEvent;
 import tamk.ohsyte.datamodel.AnnualEvent;
 
@@ -30,14 +31,7 @@ public class DateFilter extends EventFilter {
      */
     @Override
     public boolean accepts(Event event) {
-        MonthDay monthDayToMatch = event.getMonthDay();
-        if (event instanceof SingularEvent) {
-            return (this.monthDay.equals(monthDayToMatch));
-        } else if (event instanceof AnnualEvent) {
-            return this.monthDay.equals(monthDayToMatch);
-        } else {
-            return false;  // some other type of event, must be false
-        }
+        return this.monthDay.equals(event.getMonthDay());
     }
 
     /**

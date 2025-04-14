@@ -40,7 +40,7 @@ public class EventFactory {
 
             if (Character.isLetter(dateString.charAt(0))) {
                 Rule rule = VerbalRule.parse(dateString);
-                System.out.printf("Making RuleBasedEvent: %s, %s, %s%n", rule, description, category);
+                //System.out.printf("Making RuleBasedEvent: %s, %s, %s%n", rule, description, category);
                 return new RuleBasedEvent(rule, description, category);
             }
         } catch (DateTimeParseException dtpe) {
